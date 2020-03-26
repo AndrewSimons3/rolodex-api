@@ -18,16 +18,25 @@ class App extends React.Component {
     return `${user.name.title} ${user.name.first} ${user.name.last}`
   }
 
-  isFlagged (user) {
-    let newDetails = this.state.users.map((aUser) => {
-      if(aUser.id === user.id) {
-        aUser.isFlagged = !aUser.isFlagged
-      }
-    return `${user.location} ${user.email} ${user.login} ${user.dob}` 
-  })
+  getUserDetails (user) {
+    return `${user.email} ${user.location.street.number} ${user.location.street.name}`
+  }
 
-  this.setState({users: newDetails})
-}
+  toggleUserDetails(selectedUser) {
+    let newUsers = this.state.users.map(user => {
+      if (user.login.uuid === selectedUser.login.uuid) {
+        user.isShowingDetails = !user.isShowingDetails
+      } else {
+        user.isShowingDetails = false
+      }
+      return user
+    })
+
+    this.setState({users: newUsers})
+    //users is the key
+    
+  }
+
 
 
 render() {
@@ -35,7 +44,6 @@ render() {
   // if (isLoading) {
   //   return ((<div>loading...</div>))
   return (
-    
     <div>
       <h1>
         User List 
@@ -45,12 +53,20 @@ render() {
         return (<li key={index}>
           <span>{this.getUserName(user)}</span>
           <img src={user.picture.thumbnail} alt='user thumbnail img'></img>
-          <button onClick={this.isFlagged.bind(this, user)}>{user.isFlagged ? "Hide Details" : "Show Details"}</button>
+          <button onClick={this.toggleUserDetails.bind(this, user)}>{user.isShowingDetails ? "Hide Details" : "Show Details"}</button>
+          {user.isShowingDetails &&
+        <div>
+          <span>
+          {this.getUserDetails(user)}
+          </span>
+          </div>
+      }
         </li>)
       })}
       </ul>
     </div>
   );
-}}
+}
+}
 
 export default App;
