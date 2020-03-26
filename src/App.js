@@ -22,9 +22,12 @@ class App extends React.Component {
     let newDetails = this.state.users.map((aUser) => {
       if(aUser.id === user.id) {
         aUser.isFlagged = !aUser.isFlagged
-    return `${user.location} ${user.email} ${user.login} ${user.dob}`
-      
-  }
+      }
+    return `${user.location} ${user.email} ${user.login} ${user.dob}` 
+  })
+
+  this.setState({users: newDetails})
+}
 
 
 render() {
